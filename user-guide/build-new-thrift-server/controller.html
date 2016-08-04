@@ -227,6 +227,8 @@
 <div></div>
 
 
+<p>Please note that Finatra only currently supports adding a <strong>single</strong> Thrift controller to the <code>ThriftRouter</code>. The expectation is that you are implementing a single Thrift <em>service</em> and thus a single <code>BaseServiceIface</code> which is implementable in a single controller. If you want to break down your code, you can always marshal calls from the single controller to any number of other classes. In this way, the controller would just be a thin wrapper which proxies to other classes.</p>
+
 <h2><a class="anchor" name="more-information" href="#more-information">More information</a></h2>
 
 <hr />
