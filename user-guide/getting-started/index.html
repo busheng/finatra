@@ -106,7 +106,123 @@
 
 <p>Finatra at it&rsquo;s core is agnostic to the <em>type</em> of service being created. It can be used for anything based on <a href="https://github.com/twitter/util">twitter/util</a>: <a href="https://github.com/twitter/util/blob/develop/util-app/src/main/scala/com/twitter/app/App.scala" title="">com.twitter.app.App</a>. Finatra builds on top of the <a href="http://twitter.github.io/twitter-server/Features.html">features</a> of <a href="http://twitter.github.io/twitter-server/">TwitterServer</a> and <a href="https://twitter.github.io/finagle">Finagle</a> by allowing you to easily define a <a href="http://twitter.github.io/finagle/guide/Servers.html">Server</a> and controllers (a <a href="http://twitter.github.io/finagle/guide/ServicesAndFilters.html#services">Service</a>-like abstraction) which define and handle endpoints of the Server. You can also compose <a href="http://twitter.github.io/finagle/guide/ServicesAndFilters.html#filters">Filters</a> either per controller, per route in a controller, or across controllers.</p>
 
-<h2>Basics</h2>
+<h2><a class="anchor" name="dependencies" href="#dependencies">Basics</a></h2>
+
+<hr />
+
+<p>To get started, add a dependency on either <a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.twitter%22%20AND%20a%3A%22finatra-http_2.11%22">finatra-http</a> or <a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.twitter%22%20AND%20a%3A%22finatra-thrift_2.11%22">finatra-thrift</a> (depending on if you are building an HTTP or Thrift server), e.g., with <a href="http://www.scala-sbt.org/">sbt</a>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>"com.twitter" %% "finatra-http" % VERSION</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>"com.twitter" %% "finatra-thrift" % VERSION</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Where, <code>VERSION</code> is the <a href="https://github.com/twitter/finatra/releases">released version</a> you want to use of the Finatra framework. Similarily, with <a href="http://maven.apache.org/">Maven</a>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>com.twitter<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>finatra-http_2.11<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;version&gt;</span>VERSION<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>com.twitter<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>finatra-thrift_2.11<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;version&gt;</span>VERSION<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Note</em>: with Maven, you <strong>must</strong> append the appropriate scala version to the artifact name (in this example, <code>_2.11</code>). See the Finatra <a href="https://github.com/twitter/finatra/tree/finatra-2.2.0/examples/hello-world">hello-world</a> example for a more in-depth example.</p>
+
+<h4>Test dependencies</h4>
+
+<p>Finatra currently publishes <a href="https://maven.apache.org/guides/mini/guide-attached-tests.html">test-jars</a> for most modules. The <code>test-jars</code> include re-usable utilities for use in testing (e.g., the <a href="https://github.com/twitter/finatra/blob/finatra-2.2.0/inject/inject-server/src/test/scala/com/twitter/inject/server/EmbeddedTwitterServer.scala">EmbeddedTwitterServer</a>). To add a <code>test-jar</code> dependency, depend on the appropriate module with the <code>tests</code> classifier. Additionally, these dependencies are typically only needed in the <code>test</code> scope for your project. E.g., with <a href="http://www.scala-sbt.org/">sbt</a>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>&quot;com.twitter&quot; %% &quot;finatra-http&quot; % VERSION % &quot;test&quot; classifier &quot;tests&quot;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>&quot;com.twitter&quot; %% &quot;finatra-thrift&quot; % VERSION % &quot;test&quot; classifier &quot;tests&quot;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>See the sbt documentation for more information on using <a href="http://www.scala-sbt.org/0.13/docs/Library-Management.html">ivy configurations and classifiers</a>. And with <a href="http://maven.apache.org/">Maven</a>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>com.twitter<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>finatra-http_2.11<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;type&gt;</span>test-jar<span class="nt">&lt;/type&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;version&gt;</span>VERSION<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>com.twitter<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>finatra-thrift_2.11<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;type&gt;</span>test-jar<span class="nt">&lt;/type&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;version&gt;</span>VERSION<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Note</em>: There is a <a href="https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html">downside</a> to the current way Finatra <code>test-jars</code> are published: you don&rsquo;t get the transitive test-scoped dependencies automatically. Sbt and Maven only resolve the compile-time dependencies, so you&rsquo;ll have to add all the other required test-scoped dependencies by hand. We hope to address this limitation to the published <code>test-jars</code> in a future release.</p>
+
+<h4>Lightbend Activator</h4>
+
+<p>Finatra also has <a href="https://www.lightbend.com/activator/download">Lightbend Activator</a> templates for generating project scaffolds:</p>
+
+<ul>
+<li>HTTP <a href="https://github.com/twitter/finatra-activator-http-seed">template</a></li>
+<li>Thrift <a href="https://github.com/twitter/finatra-activator-thrift-seed">template</a></li>
+</ul>
+
+
+<p>See the Lightbend Activator <a href="https://www.lightbend.com/activator/docs">documentation</a> for information how to use these templates with the activator application.</p>
+
+<h2><a class="anchor" name="concepts" href="#concepts">Concepts</a></h2>
 
 <hr />
 
