@@ -79,13 +79,13 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li ><a href="/finatra/blog/archives">Blog</a></li>
-            <li><a href="/finatra/user-guide">User&nbsp;Guide&nbsp;&midast;</a></li>
+            <li><a href="/finatra/user-guide">User&nbsp;Guide&nbsp;<span class="glyphicon glyphicon-info-sign" title="More Information" aria-hidden="true"></span></a></li>
             <li><a href="/finatra/docs/index.html">Scaladoc</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/finatra/presentations">Presentations&nbsp;&&nbsp;Slides</a></li>
             <li><a href="https://groups.google.com/forum/#!forum/finatra-users">Forum</a></li>
-            <li><a href="/finatra/v1/docs/index.html">v1.x Documentation (deprecated)</a></li>
+            <li><a href="/finatra/v1/docs/index.html">v1.x Documentation&nbsp;<span class="glyphicon glyphicon-ban-circle" title="Deprecated" aria-hidden="true"></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -208,19 +208,27 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><em>Note</em>: There is a <a href="https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html">downside</a> to the current way Finatra <code>test-jars</code> are published: you don&rsquo;t get the transitive test-scoped dependencies automatically. Sbt and Maven only resolve the compile-time dependencies, so you&rsquo;ll have to add all the other required test-scoped dependencies by hand. We hope to address this limitation to the published <code>test-jars</code> in a future release.</p>
+<p><em>Note</em>: There is a <a href="https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html">downside</a> to the current way Finatra <code>test-jars</code> are published: you don&rsquo;t get the transitive test-scoped dependencies automatically. Maven and sbt only resolve the compile-time dependencies, so you&rsquo;ll have to add all the other required test-scoped dependencies by hand. We hope to address this limitation to the published <code>test-jars</code> in a future release.</p>
 
 <h4>Lightbend Activator</h4>
 
-<p>Finatra also has <a href="https://www.lightbend.com/activator/download">Lightbend Activator</a> templates for generating project scaffolds:</p>
+<p>Finatra also has <a href="https://www.lightbend.com/activator/download">Lightbend</a> Activator <a href="https://www.lightbend.com/activator/templates#filter:finatra%20v2.x">templates</a> for generating project scaffolds:</p>
 
 <ul>
-<li>HTTP <a href="https://github.com/twitter/finatra-activator-http-seed">template</a></li>
-<li>Thrift <a href="https://github.com/twitter/finatra-activator-thrift-seed">template</a></li>
+<li>HTTP <a href="https://github.com/twitter/finatra-activator-http-seed">template</a>. <a href="https://www.lightbend.com/activator/download">Activator</a> instructions <a href="https://www.lightbend.com/activator/template/finatra-http-seed">here</a>.</li>
+<li>Thrift <a href="https://github.com/twitter/finatra-activator-thrift-seed">template</a>. <a href="https://www.lightbend.com/activator/download">Activator</a> instructions <a href="https://www.lightbend.com/activator/template/finatra-thrift-seed">here</a>.</li>
 </ul>
 
 
 <p>See the Lightbend Activator <a href="https://www.lightbend.com/activator/docs">documentation</a> for information how to use these templates with the activator application.</p>
+
+<h2><a class="anchor" name="examples" href="#examples">Examples</a></h2>
+
+<hr />
+
+<p>Finatra includes a few working examples which highlight various features of the framework and include tests. In the <a href="https://github.com/twitter/finatra/tree/develop/examples">develop branch</a> these examples are included in the root <a href="http://www.scala-sbt.org/">sbt</a> build and are thus buildable as part of the entire project. In the <a href="https://github.com/twitter/finatra/tree/master/examples">master branch</a> (or a <a href="https://github.com/twitter/finatra/tree/finatra-2.2.0/examples">release branch</a>) these examples can be built using their invididual <a href="http://www.scala-sbt.org/">sbt</a> (or <a href="http://maven.apache.org/">Maven</a>) build files.</p>
+
+<p>Please take a look through the examples for more detailed information on features, testing, and building with sbt (or Maven).</p>
 
 <h2><a class="anchor" name="concepts" href="#concepts">Concepts</a></h2>
 
